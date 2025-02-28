@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="form-style-10">
+    <h1>Список парковок<span>Все парковки в системе</span></h1>
+    <div class="inner-wrap">
+        <a href="{{ url_for('index') }}" class="button">Назад в основное меню</a>
+
+        {% if error %}
+        <div style="color: red; font-weight: bold;">
+            <p>Ошибка: {{ error }}</p>
+        </div>
+
+        {% endif %}
+        {% if places %}
+        <table class="customTable">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Адрес</th>
+                    <th>Открыта</th>
+                    <th>Количество мест</th>
+                    <th>Количество свободных мест</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for parking in places %}
+                <tr>
+                    <td>{{ parking.id }}</td>
+                    <td>{{ parking.address }}</td>
+                    <td>{{ parking.opened }}</td>
+                    <td>{{ parking.count_place }}</td>
+                    <td>{{ parking.count_available_places }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <p>В системе нет парковок.</p>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

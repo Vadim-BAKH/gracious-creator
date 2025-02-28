@@ -1,0 +1,92 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="form-style-10">
+    <h1>Парковка клиента</h1>
+    <div class="inner-wrap">
+        <a href="{{ url_for('index') }}" class="button">Назад в основное меню</a>
+
+        <!-- Форма для добавления или обновления парковки клиента -->
+        <form method="POST" action="{{ url_for('add_or_update_client_parking') }}">
+            {{ form.hidden_tag() }}  <!-- CSRF-токен -->
+
+            {{ form.client_id.label }}  <!-- Метка для поля ID клиента -->
+            {{ form.client_id(placeholder="Введите номер клиента") }}  <!-- Поле ввода ID клиента -->
+            {% for error in form.client_id.errors %}
+                <span style="color: red;">{{ error }}</span>  <!-- Отображение ошибок валидации -->
+            {% endfor %}
+
+            {{ form.parking_id.label }}  <!-- Метка для поля ID парковки -->
+            {{ form.parking_id(placeholder="Введите номер парковки") }}  <!-- Поле ввода ID парковки -->
+            {% for error in form.parking_id.errors %}
+                <span style="color: red;">{{ error }}</span>  <!-- Отображение ошибок валидации -->
+            {% endfor %}
+
+            <button type="submit" class="button">Отправить</button>  <!-- Кнопка отправки данных парковки -->
+        </form>
+
+        {% if result %}
+        <h2>Результат операции:</h2>
+        <table class="customTable">
+            <tr>
+                <th>Клиент ID</th>
+                <th>Парковка ID</th>
+                <th>Время въезда</th>
+            </tr>
+            <tr>
+                <td>{{ result.client_id }}</td>
+                <td>{{ result.parking_id }}</td>
+                <td>{{ result.time_in }}</td>
+            </tr>
+        </table>
+
+        {% elif error %}
+        <p style="color: red;">Ошибка: {{ error }}</p>  <!-- Отображение ошибок -->
+        {% endif %}
+    </div>
+</div>
+
+<style>
+.form-style-10 {
+    width: 100%;
+    padding: 30px;
+    background: #f9f9f9;
+    border-radius: 8px;
+}
+
+.inner-wrap {
+    margin-bottom: 15px;
+}
+
+.input-field {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.button {
+    padding: 10px 15px;
+    background-color: #5cb85c;
+    color: white;
+    border: none;
+    border-radius: 4px;
+}
+
+.customTable {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.customTable th, .customTable td {
+    padding: 10px;
+    text-align: left;
+}
+
+.customTable th {
+    background-color: #f2f2f2; /* Цвет фона для заголовков таблицы */
+}
+</style>
+
+{% endblock %}
+

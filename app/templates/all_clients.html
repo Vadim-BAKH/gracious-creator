@@ -1,0 +1,78 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="form-style-10">
+    <div class="header">
+        <h1>Список клиентов<span>Все клиенты в системе</span></h1>
+        <a href="{{ url_for('index') }}" class="button">Назад в основное меню</a>
+    </div>
+
+    <div class="inner-wrap">
+        <!-- Проверяем, есть ли ошибка -->
+        {% if error %}
+        <div style="color: red; font-weight: bold;">
+            <p>Ошибка: {{ error }}</p>
+        </div>
+        {% endif %}
+
+        <!-- Если клиенты есть, отображаем таблицу -->
+        {% if clients %}
+        <div class="table-container">
+            <table class="customTable">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Имя</th>
+                        <th>Фамилия</th>
+                        <th>Номер машины</th>
+                        <th>Номер кредитной карты</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for client in clients %}
+                    <tr>
+                        <td>{{ client.id }}</td>
+                        <td>{{ client.name }}</td>
+                        <td>{{ client.surname }}</td>
+                        <td>{{ client.car_number }}</td>
+                        <td>{{ client.credit_card }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+        <!-- Если клиентов нет и ошибки нет -->
+        {% if not error %}
+        <p>В системе нет ни одного клиента.</p>
+        {% endif %}
+        {% endif %}
+    </div>
+</div>
+
+<style>
+.header {
+    position: sticky; /* или fixed */
+    top: 0;
+    background-color: white; /* Цвет фона для видимости */
+    z-index: 1000; /* Чтобы заголовок был выше других элементов */
+    padding: 10px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Тень для отделения от контента */
+}
+
+.table-container {
+    max-height: calc(100vh - 150px); /* Высота контейнера с учетом заголовка и кнопки */
+    overflow-y: auto; /* Прокрутка по вертикали */
+}
+
+.customTable th {
+    position: sticky; /* Закрепляем заголовки таблицы */
+    top: 0; /* Положение при прокрутке */
+    background-color: #f9f9f9; /* Цвет фона для заголовков */
+    z-index: 100; /* Чтобы заголовки были выше строк таблицы */
+    padding: 10px; /* Отступы для удобства чтения */
+    border-bottom: 2px solid #ddd; /* Нижняя граница для отделения от содержимого */
+}
+</style>
+
+{% endblock %}

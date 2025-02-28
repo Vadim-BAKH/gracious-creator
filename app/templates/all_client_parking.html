@@ -1,0 +1,103 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="form-style-10">
+    <div class="header">
+        <h1>Список парковок клиентов<span>Все парковки клиентов в системе</span></h1>
+        <a href="{{ url_for('index') }}" class="button">Назад в основное меню</a>
+    </div>
+
+    <div class="inner-wrap">
+        <!-- Проверяем, есть ли ошибка -->
+        {% if error %}
+        <div style="color: red; font-weight: bold;">
+            <p>Ошибка: {{ error }}</p>
+        </div>
+        {% endif %}
+
+        <!-- Если есть данные о парковках, отображаем таблицу -->
+        {% if result %}
+        <div class="table-container">
+            <table class="customTable">
+                <thead>
+                    <tr>
+                        <th>Клиент ID</th>
+                        <th>Парковка ID</th>
+                        <th>Время входа</th>
+                        <th>Время выезда</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for parking in result %}
+                    <tr>
+                        <td>{{ parking.client_id }}</td>
+                        <td>{{ parking.parking_id }}</td>
+                        <td>{{ parking.time_in }}</td>
+                        <td>{{ parking.time_out }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+        <!-- Если данных о парковках нет и ошибки нет -->
+        {% if not error %}
+        <p>В системе нет сведений о парковках клиентов.</p>
+        {% endif %}
+        {% endif %}
+    </div>
+</div>
+
+<style>
+.header {
+    position: sticky; /* или fixed */
+    top: 0;
+    background-color: white; /* Цвет фона для видимости */
+    z-index: 1000; /* Чтобы заголовок был выше других элементов */
+    padding: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Тень для отделения от контента */
+}
+
+.inner-wrap {
+    width: 100%; /* Убедитесь, что внутренний контейнер занимает всю ширину */
+}
+
+.table-container {
+    width: 100%; /* Ширина контейнера */
+    overflow-x: auto; /* Разрешаем горизонтальную прокрутку, если контент не помещается */
+}
+
+.customTable {
+    width: 100%; /* Таблица занимает всю ширину контейнера */
+    border-collapse: collapse;
+}
+
+.customTable th {
+    position: sticky; /* Закрепляем заголовки таблицы */
+    top: 0; /* Положение при прокрутке */
+    background-color: #007bff; /* Синий цвет фона для заголовков */
+    color: white; /* Белый цвет текста для заголовков */
+    z-index: 100; /* Чтобы заголовки были выше строк таблицы */
+    padding: 10px; /* Отступы для удобства чтения */
+}
+
+.customTable th,
+.customTable td {
+    text-align: left;
+    padding: 12px;
+    word-wrap: break-word; /* Перенос текста внутри ячеек */
+}
+
+.customTable tr:nth-child(even) {
+    background-color: #f9f9f9; /* Светлый фон для четных строк */
+}
+
+.customTable tr:hover {
+    background-color: #f1f1f1; /* Подсветка строки при наведении */
+}
+</style>
+
+{% endblock %}
+
+
+

@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="form-style-10">
+    <h1>Система управления парковками<span>Добро пожаловать!</span></h1>
+    <div class="inner-wrap">
+        <label>Выберите действие:</label>
+        <a href="{{ url_for('get_clients') }}" class="button">Список клиентов</a>
+        <a href="{{ url_for('get_all_parking') }}" class="button">Список парковок</a>
+        <a href="{{ url_for('get_client_parking') }}" class="button">Список клиент-паркинга</a>
+        <a href="{{ url_for('add_or_update_client') }}" class="button">Добавить клиента</a>
+        <a href="{{ url_for('add_or_update_parking') }}" class="button">Добавить парковку</a>
+        <a href="{{ url_for('client_search') }}" class="button">Найти клиента по номеру</a>
+        <a href="{{ url_for('add_or_update_client_parking') }}" class="button">Создать парковку клиента</a>
+        <a href="{{ url_for('patch_out_client_parking') }}" class="button">Выпустить, закрыть парковку клиента</a>
+
+    </div>
+</div>
+{% endblock %}

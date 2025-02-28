@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="form-style-10">
+    <h1>Найти клиента по номеру</h1>
+    <div class="inner-wrap">
+        <a href="{{ url_for('index') }}" class="button">Назад в основное меню</a>
+
+        <!-- Форма для поиска клиента -->
+        <form method="POST" action="{{ url_for('client_search') }}">
+            {{ form.hidden_tag() }}  <!-- CSRF-токен -->
+            {{ form.client_id.label }} <!-- Метка для поля ввода -->
+            {{ form.client_id(placeholder="Введите ID клиента") }}     <!-- Поле ввода с плейсхолдером -->
+
+            {% for error in form.client_id.errors %}
+                <span style="color: red;">{{ error }}</span>  <!-- Отображение ошибок валидации -->
+            {% endfor %}
+
+            {{ form.submit() }}        <!-- Кнопка отправки -->
+        </form>
+
+        {% if client %}
+            <h2>Информация о клиенте:</h2>
+            <table class="customTable">
+                <tr><th>Поле</th><th>Значение</th></tr>
+                <tr><td>ID</td><td>{{ client.id }}</td></tr>
+                <tr><td>Имя</td><td>{{ client.name }}</td></tr>
+                <tr><td>Фамилия</td><td>{{ client.surname }}</td></tr>
+                <tr><td>Номер машины</td><td>{{ client.car_number }}</td></tr>
+                <tr><td>Номер кредитной карты</td><td>{{ client.credit_card }}</td></tr>
+            </table>
+        {% elif error %}
+            <p style="color: red;">Ошибка: {{ error }}</p>  <!-- Отображение ошибок -->
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
+

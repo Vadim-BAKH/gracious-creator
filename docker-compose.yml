@@ -1,0 +1,66 @@
+services:
+  web:
+    build: .
+    ports:
+      - '5000:5000'
+    environment:
+      DB_USER: ${DB_USER}
+      DB_PASSWORD: ${DB_PASSWORD}
+      TESTING: "True"
+
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - mynetwork
+
+  db:
+    image: postgres:17.2
+    container_name: postgres_local
+    restart: always
+    shm_size: 128mb
+    environment:
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: best_parking_db
+      PGDATA: /var/lib/postgresql/data/pg_data
+      POSTGRES_LOG_DESTINATION: stderr
+      POSTGRES_LOGGING_COLLECTOR: "true"
+      POSTGRES_LOG_DIRECTORY: /var/lib/postgresql/data/pg_log
+
+
+    ports:
+      - '5432:5432'
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+    logging:
+      driver: 'json-file'
+      options:
+        max-size: '10m'
+        max-file: '3'
+    networks:
+      - mynetwork
+    healthcheck:
+      test: [ "CMD", "pg_isready", "-U", "${DB_USER}" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  db_test:
+    image: postgres:17.2
+    container_name: postgres_test
+    environment:
+      POSTGRES_USER: test
+      POSTGRES_PASSWORD: test
+      POSTGRES_DB: test_db
+    ports:
+      - "5433:5432"  # 5433 is the port for the test database
+    restart: always
+
+
+networks:
+  mynetwork:
+
+volumes:
+  postgres_data:

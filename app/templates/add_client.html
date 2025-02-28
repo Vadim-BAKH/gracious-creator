@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="form-style-10">
+    <h1>Добавить клиента</h1>
+    <div class="inner-wrap">
+        <a href="{{ url_for('index') }}" class="button">Назад в основное меню</a>
+
+        <!-- Форма для добавления клиента -->
+        <form method="POST" action="{{ url_for('add_or_update_client') }}">
+            {{ form.hidden_tag() }}  <!-- CSRF-токен -->
+
+            {{ form.name.label }}  <!-- Метка для поля имени -->
+            {{ form.name(placeholder="Введите имя") }}  <!-- Поле ввода имени -->
+            {% for error in form.name.errors %}
+                <span style="color: red;">{{ error }}</span>  <!-- Отображение ошибок валидации -->
+            {% endfor %}
+
+            {{ form.surname.label }}  <!-- Метка для поля фамилии -->
+            {{ form.surname(placeholder="Введите фамилию") }}  <!-- Поле ввода фамилии -->
+            {% for error in form.surname.errors %}
+                <span style="color: red;">{{ error }}</span>  <!-- Отображение ошибок валидации -->
+            {% endfor %}
+
+            {{ form.credit_card.label }}  <!-- Метка для поля номера кредитной карты -->
+            {{ form.credit_card(placeholder="Введите номер кредитной карты") }}  <!-- Поле ввода номера кредитной карты -->
+            {% for error in form.credit_card.errors %}
+                <span style="color: red;">{{ error }}</span>  <!-- Отображение ошибок валидации -->
+            {% endfor %}
+
+            {{ form.car_number.label }}  <!-- Метка для поля номера транспортного средства -->
+            {{ form.car_number(placeholder="Введите номер транспортного средства") }}  <!-- Поле ввода номера транспортного средства -->
+            {% for error in form.car_number.errors %}
+                <span style="color: red;">{{ error }}</span>  <!-- Отображение ошибок валидации -->
+            {% endfor %}
+
+            {{ form.submit() }}  <!-- Кнопка отправки данных клиента -->
+        </form>
+
+        {% if success and client %}
+        <h2>Клиент успешно добавлен/обновлен:</h2>
+        <table class="customTable">
+            <tr>
+                <th>Поле</th>
+                <th>Значение</th>
+            </tr>
+            <tr>
+                <td>ID</td>
+                <td>{{ client.id }}</td>
+            </tr>
+            <tr>
+                <td>Имя</td>
+                <td>{{ client.name }}</td>
+            </tr>
+            <tr>
+                <td>Фамилия</td>
+                <td>{{ client.surname }}</td>
+            </tr>
+            <tr>
+                <td>Номер кредитной карты</td>
+                <td>{{ client.credit_card }}</td>
+            </tr>
+            <tr>
+                <td>Номер транспортного средства</td>
+                <td>{{ client.car_number }}</td>
+            </tr>
+        </table>
+        {% elif error %}
+        <p style="color: red;">Ошибка: {{ error }}</p>  <!-- Отображение ошибок -->
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
