@@ -11,6 +11,10 @@ on:
 jobs:
   build-and-test:
     runs-on: ubuntu-latest
+    container:
+      image: python:3.13-slim
+      options: --user root
+
     services:
       postgres:
         image: postgres:17.2
@@ -18,18 +22,15 @@ jobs:
           POSTGRES_USER: ${{ secrets.DB_USER }}
           POSTGRES_PASSWORD: ${{ secrets.DB_PASSWORD }}
           POSTGRES_DB: best_parking_db
-        ports:
-          - "5432:5432"
-        options: --health-cmd="pg_isready -U ${{ secrets.DB_USER }}" --health-interval=10s --health-timeout=5s --health-retries=5
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
-
-      - name: Set up Python
-        uses: actions/setup-python@v4
-        with:
-          python-version: '3.13'
 
       - name: Install dependencies
         run: |
@@ -45,10 +46,11 @@ jobs:
           ruff check --fix .
 
       - name: Run Gunicorn in background
+        env:
+          DB_USER: ${{ secrets.DB_USER }}
+          DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+          TESTING: "True"
         run: |
-          export DB_USER=${{ secrets.DB_USER }}
-          export DB_PASSWORD=${{ secrets.DB_PASSWORD }}
-          export TESTING=True
           gunicorn --bind 0.0.0.0:5000 wsgi:app &
           sleep 5  # Подождите, пока Gunicorn запустится
 
@@ -57,6 +59,8 @@ jobs:
           DB_USER: ${{ secrets.DB_USER }}
           DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
           TESTING: "True"
+          POSTGRES_HOST: postgres
+          POSTGRES_PORT: 5432
         run: |
           pytest tests/
 
