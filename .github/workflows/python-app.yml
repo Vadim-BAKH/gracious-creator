@@ -8,13 +8,10 @@ on:
     branches:
       - parking/cleaver
 
+
 jobs:
   build-and-test:
     runs-on: ubuntu-latest
-    container:
-      image: python:3.13-slim
-      options: --user root
-
     services:
       postgres:
         image: postgres:17.2
@@ -32,23 +29,33 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.13'
+
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      - name: Run linters and formatters
+      - name: Run script to create and populate table
+        env:
+          DB_USER: ${{ secrets.DB_USER }}
+          DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+          POSTGRES_HOST: postgres
+          POSTGRES_PORT: 5432
+          POSTGRES_DB: best_parking_db
         run: |
-          # Проверка и исправление кода
-          pip install flake8 isort ruff
-          flake8 .
-          isort --recursive .
-          ruff check --fix .
+          python create_and_populate_table.py
 
       - name: Run Gunicorn in background
         env:
           DB_USER: ${{ secrets.DB_USER }}
           DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+          POSTGRES_HOST: postgres
+          POSTGRES_PORT: 5432
+          POSTGRES_DB: best_parking_db
           TESTING: "True"
         run: |
           gunicorn --bind 0.0.0.0:5000 wsgi:app &
@@ -58,9 +65,10 @@ jobs:
         env:
           DB_USER: ${{ secrets.DB_USER }}
           DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
-          TESTING: "True"
           POSTGRES_HOST: postgres
           POSTGRES_PORT: 5432
+          POSTGRES_DB: best_parking_db
+          TESTING: "True"
         run: |
           pytest tests/
 
