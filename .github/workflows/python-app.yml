@@ -12,30 +12,15 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
-    env:
-      DB_USER: your_db_user
-      DB_PASSWORD: your_db_password
-      SECRET_KEY: your_secret_key
-
     services:
       postgres:
-        image: postgres:17.2
-        env:
-          POSTGRES_USER: ${{ secrets.DB_USER }}
-          POSTGRES_PASSWORD: ${{ secrets.DB_PASSWORD }}
-          POSTGRES_DB: best_parking_db
-        ports:
-          - "5432:5432"
-        options: --health-cmd="pg_isready -U ${{ secrets.DB_USER }}" --health-interval=10s --health-timeout=5s --health-retries=5
-
-      postgres_test:
         image: postgres:17.2
         env:
           POSTGRES_USER: test
           POSTGRES_PASSWORD: test
           POSTGRES_DB: test_db
         ports:
-          - "5433:5432"
+          - "5432:5432"
 
     steps:
     - uses: actions/checkout@v4
@@ -62,4 +47,3 @@ jobs:
       run: |
         pip install pytest
         pytest
-
