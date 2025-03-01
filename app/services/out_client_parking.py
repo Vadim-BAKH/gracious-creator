@@ -3,8 +3,8 @@
 from flask import render_template
 from sqlalchemy.exc import InvalidRequestError, SQLAlchemyError
 
-from models import Client, ClientParking, Parking
-from utils import process_client_parking_form
+from .. models import Client, ClientParking, Parking
+from .. utils import process_client_parking_form
 
 
 def out_and_pay_client_parking(form) -> str:

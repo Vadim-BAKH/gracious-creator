@@ -1,6 +1,6 @@
 """Тест конфигурации"""
 
-from database import SECRET_KEY
+from .. database import SECRET_KEY
 
 
 def test_app_config(test_app):

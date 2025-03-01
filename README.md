@@ -187,6 +187,9 @@ PostgreSQL.
 для использования после заполнения таблиц, так как убивает таблицы в конце теста и закрывает сессию.
 ![img_33.png](img_33.png)
 
+Перед сборкой контейнера удалить относительные импорты в модулях папок.
+(.. database -> database)
+
 bash   docker compose up --build -d
 
 bash   docker exec -it  best_parking-web-1 bash 

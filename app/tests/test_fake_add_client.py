@@ -2,8 +2,8 @@
 
 import pytest
 
-from factories.factories import ClientFactory
-from models import Client
+from .. factories.factories import ClientFactory
+from .. models import Client
 
 
 @pytest.mark.fake

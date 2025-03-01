@@ -4,8 +4,8 @@ from random import choice, randint, randrange
 
 from factory import Faker, LazyAttribute, alchemy
 
-from log import logger
-from models import Client, Parking, db
+from .. log import logger
+from .. models import Client, Parking, db
 
 
 def create_car_number_random(obj) -> str:

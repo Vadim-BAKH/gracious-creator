@@ -3,7 +3,7 @@
 from flask import render_template
 from sqlalchemy.exc import InvalidRequestError, SQLAlchemyError
 
-from models import Parking
+from .. models import Parking
 
 
 def add_or_update_parking_places(form):

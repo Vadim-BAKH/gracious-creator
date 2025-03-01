@@ -3,8 +3,8 @@
 from flask import render_template
 from sqlalchemy.exc import InvalidRequestError, SQLAlchemyError
 
-from models import ClientParking
-from schema import ClientParkingSchema
+from .. models import ClientParking
+from .. schema import ClientParkingSchema
 
 
 def see_all_client_parking() -> str:

@@ -3,11 +3,11 @@
 import pytest
 from flask.signals import template_rendered
 
-from database import SECRET_KEY, TEST_DB_URI
-from flask_main import create_app
-from log import logger
-from models import Client, ClientParking, Parking
-from models import db as db_test
+from .. database import SECRET_KEY, TEST_DB_URI
+from .. flask_main import create_app
+from .. log import logger
+from .. models import Client, ClientParking, Parking
+from .. models import db as db_test
 
 
 def add_test_data(db_session):
