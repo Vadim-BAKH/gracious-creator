@@ -3,10 +3,10 @@
 from flask import Flask
 from flask_wtf.csrf import CSRFProtect
 
-from database import DATABASE_URI, SECRET_KEY
-from log import logger
-from models import db
-from register_routes import register_routes
+from .database import DATABASE_URI, SECRET_KEY
+from .log import logger
+from .models import db
+from .register_routes import register_routes
 
 csrf = CSRFProtect()
 

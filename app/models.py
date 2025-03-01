@@ -10,7 +10,7 @@ from sqlalchemy import select
 from sqlalchemy.dialects.postgresql import insert
 from sqlalchemy.exc import InvalidRequestError, SQLAlchemyError
 
-from log import logger
+from .log import logger
 
 tax: Optional[int] = 100
 

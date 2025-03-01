@@ -3,9 +3,8 @@
 import pytest
 from flask.signals import template_rendered
 
-
-from app.database import SECRET_KEY, TEST_DB_URI
 from app.flask_main import create_app
+from app.database import SECRET_KEY, TEST_DB_URI
 from app.log import logger
 from app.models import Client, ClientParking, Parking
 from app.models import db as db_test

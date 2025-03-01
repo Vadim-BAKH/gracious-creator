@@ -2,11 +2,11 @@
 
 from flask import render_template
 
-from services import (add_client, add_parking, enter_client_parking,
-                      out_client_parking, see_all_client_parking,
-                      see_client_by_id, see_clients, see_parking)
-from validate import (ClientAddForm, ClientParkingForm, ClientSearchForm,
-                      ParkingAddForm)
+from .services import (add_client, add_parking, enter_client_parking,
+                       out_client_parking, see_all_client_parking,
+                       see_client_by_id, see_clients, see_parking)
+from .validate import (ClientAddForm, ClientParkingForm, ClientSearchForm,
+                       ParkingAddForm)
 
 
 def register_routes(app):

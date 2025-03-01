@@ -5,7 +5,7 @@
 from marshmallow import Schema, fields
 from marshmallow_sqlalchemy import SQLAlchemyAutoSchema
 
-from models import Client, Parking
+from .models import Client, Parking
 
 
 class ClientSchema(SQLAlchemyAutoSchema):
