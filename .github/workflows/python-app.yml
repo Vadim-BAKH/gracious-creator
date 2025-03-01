@@ -12,6 +12,11 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
+    env:
+      DB_USER: ${{ secrets.DB_USER }}
+      DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+      SECRET_KEY: ${{ secrets.SECRET_KEY }}
+
     services:
       postgres:
         image: postgres:17.2
@@ -31,11 +36,6 @@ jobs:
           POSTGRES_DB: test_db
         ports:
           - "5433:5432"
-
-    env:
-      DB_USER: ${{ secrets.DB_USER }}
-      DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
-      SECRET_KEY: ${{ secrets.SECRET_KEY }}
 
     steps:
     - uses: actions/checkout@v4
@@ -62,3 +62,4 @@ jobs:
       run: |
         pip install pytest
         pytest
+
