@@ -15,42 +15,34 @@ jobs:
       image: python:3.13-slim
       options: --user root
 
+   # Service containers to run with `runner-job`
     services:
-      # postgres:
-      #   image: postgres:17.2
-      #   env:
-      #     POSTGRES_USER: ${{ secrets.DB_USER }}
-      #     POSTGRES_PASSWORD: ${{ secrets.DB_PASSWORD }}
-      #     POSTGRES_DB: best_parking_db
-      #   options: >-
-      #     --health-cmd pg_isready
-      #     --health-interval 10s
-      #     --health-timeout 5s
-      #     --health-retries 5
-
+      # Label used to access the service container
       postgres:
-        image: postgres:17.2
+        # Docker Hub image
+        image: postgres
+        # Provide the password for postgres
         env:
-          POSTGRES_USER: test
-          POSTGRES_PASSWORD: test
-          POSTGRES_DB: test_db
-        ports:
-          - "5432:5432"
+          POSTGRES_PASSWORD: postgres
+        # Set health checks to wait until postgres has started
         options: >-
           --health-cmd pg_isready
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
+        ports:
+          # Maps tcp port 5432 on service container to the host
+          - 5432:5432
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-
+      # Downloads a copy of the code in your repository before running CI tests
+      - name: Check out repository code
+    
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
-
+         
       - name: Run Gunicorn in background
         env:
           DB_USER: ${{ secrets.DB_USER }}
@@ -62,16 +54,29 @@ jobs:
         run: |
           gunicorn --bind 0.0.0.0:5000 wsgi:app &
           sleep 5  # Подождите, пока Gunicorn запустится
+        
+       
 
+      - name: Connect to PostgreSQL
+        # Runs a script that creates a PostgreSQL table, populates
+        # the table with data, and then retrieves the data
+        run: node client.js
+        # Environment variables used by the `client.js` script to create
+        # a new PostgreSQL table.
+        env:
+          # The hostname used to communicate with the PostgreSQL service container
+          POSTGRES_HOST: localhost
+          # The default PostgreSQL port
+          POSTGRES_PORT: 5432
       - name: Run tests
         env:
           DB_USER: test
           DB_PASSWORD: test
           POSTGRES_HOST: db_test
-          POSTGRES_PORT: 5433
+          POSTGRES_PORT: 5432
           POSTGRES_DB: test_db
           TESTING: "True"
-          TEST_DB_URI: "postgresql://test:test@db_test:5433/test_db"
+          TEST_DB_URI: "postgresql://test:test@db_test:5432/test_db"
         run: |
           pytest 
 
