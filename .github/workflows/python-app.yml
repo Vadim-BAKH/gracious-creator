@@ -60,8 +60,8 @@ jobs:
           TESTING: "True"
         run: |
           # Запуск тестов, например, используя pytest
-          docker-compose exec web pytest tests/
+          docker compose exec web pytest tests/
 
       - name: Stop and remove containers
         run: |
-          docker-compose down -v
+          docker compose down -v
