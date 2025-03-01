@@ -39,16 +39,6 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      - name: Run script to create and populate table
-        env:
-          DB_USER: ${{ secrets.DB_USER }}
-          DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
-          POSTGRES_HOST: postgres
-          POSTGRES_PORT: 5432
-          POSTGRES_DB: best_parking_db
-        run: |
-          python create_and_populate_table.py
-
       - name: Run Gunicorn in background
         env:
           DB_USER: ${{ secrets.DB_USER }}
