@@ -8,10 +8,13 @@ on:
     branches:
       - parking/cleaver
 
-
 jobs:
   build-and-test:
     runs-on: ubuntu-latest
+    container:
+      image: python:3.13-slim
+      options: --user root
+
     services:
       postgres:
         image: postgres:17.2
@@ -25,14 +28,23 @@ jobs:
           --health-timeout 5s
           --health-retries 5
 
+      db_test:
+        image: postgres:17.2
+        env:
+          POSTGRES_USER: test
+          POSTGRES_PASSWORD: test
+          POSTGRES_DB: test_db
+        ports:
+          - "5433:5432"
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
-
-      - name: Set up Python
-        uses: actions/setup-python@v4
-        with:
-          python-version: '3.13'
 
       - name: Install dependencies
         run: |
@@ -46,21 +58,21 @@ jobs:
           POSTGRES_HOST: postgres
           POSTGRES_PORT: 5432
           POSTGRES_DB: best_parking_db
-          TESTING: "True"
+          TESTING: "False"
         run: |
           gunicorn --bind 0.0.0.0:5000 wsgi:app &
           sleep 5  # Подождите, пока Gunicorn запустится
 
       - name: Run tests
         env:
-          DB_USER: ${{ secrets.DB_USER }}
-          DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
-          POSTGRES_HOST: postgres
-          POSTGRES_PORT: 5432
-          POSTGRES_DB: best_parking_db
+          DB_USER: test
+          DB_PASSWORD: test
+          POSTGRES_HOST: db_test
+          POSTGRES_PORT: 5433
+          POSTGRES_DB: test_db
           TESTING: "True"
         run: |
-          pytest 
+          pytest tests/
 
       - name: Stop Gunicorn
         run: |
