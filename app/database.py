@@ -9,7 +9,7 @@ DB_USER = os.getenv("DB_USER")
 DB_PASSWORD = os.getenv("DB_PASSWORD")
 
 
-SECRET_KEY = os.getenv("SECRET_KEY")
+SECRET_KEY = "python"
 
-DATABASE_URI = f"postgresql://{DB_USER}:{DB_PASSWORD}@db:5432/best_parking_db"
+DATABASE_URI = f"postgresql://admin:admin@db:5432/best_parking_db"
 TEST_DB_URI = "postgresql://test:test@db_test:5433/test_db"
