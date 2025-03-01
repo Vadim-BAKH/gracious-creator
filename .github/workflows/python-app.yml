@@ -7,6 +7,12 @@ on:
   pull_request:
     branches:
       - parking/cleaver
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - main
 
 jobs:
   build-and-test:
@@ -71,6 +77,7 @@ jobs:
           POSTGRES_PORT: 5432
           POSTGRES_DB: test_db
           TESTING: "True"
+          TEST_DB_URI: "postgresql://test:test@db_test:5432/test_db"
         run: |
           pytest 
 
