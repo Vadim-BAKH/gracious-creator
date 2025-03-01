@@ -60,7 +60,7 @@ jobs:
           POSTGRES_DB: best_parking_db
           TESTING: "True"
         run: |
-          pytest tests/
+          pytest 
 
       - name: Stop Gunicorn
         run: |
