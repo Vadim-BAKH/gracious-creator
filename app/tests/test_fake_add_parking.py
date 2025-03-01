@@ -2,8 +2,8 @@
 
 import pytest
 
-from .. factories.factories import ParkingFactory
-from .. models import Parking
+from app.factories.factories import ParkingFactory
+from app.models import Parking
 
 
 @pytest.mark.fake

@@ -3,7 +3,7 @@
 from flask import render_template
 from sqlalchemy.exc import InvalidRequestError, SQLAlchemyError
 
-from .. models import Client
+from app.models import Client
 
 
 def add_or_update_client_for_parking(form) -> str:

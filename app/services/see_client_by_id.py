@@ -3,8 +3,8 @@
 from flask import Response, redirect, render_template, url_for
 from sqlalchemy.exc import InvalidRequestError, SQLAlchemyError
 
-from .. models import Client
-from .. schema import ClientSchema
+from app.models import Client
+from app.schema import ClientSchema
 
 
 def get_client_id_for_search(form) -> Response | str:
