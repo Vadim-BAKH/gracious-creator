@@ -7,6 +7,12 @@ on:
   pull_request:
     branches:
       - parking/cleaver
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - main
 
 jobs:
   build-and-test:
@@ -68,11 +74,11 @@ jobs:
           DB_USER: test
           DB_PASSWORD: test
           POSTGRES_HOST: db_test
-          POSTGRES_PORT: 5433
+          POSTGRES_PORT: 5432
           POSTGRES_DB: test_db
           TESTING: "True"
         run: |
-          pytest 
+          pytest tests/
 
       - name: Stop Gunicorn
         run: |
