@@ -68,10 +68,10 @@ jobs:
           DB_USER: test
           DB_PASSWORD: test
           POSTGRES_HOST: db_test
-          POSTGRES_PORT: 5432
+          POSTGRES_PORT: 5433
           POSTGRES_DB: test_db
           TESTING: "True"
-          TEST_DB_URI: "postgresql://test:test@db_test:5432/test_db"
+          TEST_DB_URI: "postgresql://test:test@db_test:5433/test_db"
         run: |
           pytest 
 
