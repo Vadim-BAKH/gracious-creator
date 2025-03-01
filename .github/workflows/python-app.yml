@@ -43,7 +43,7 @@ jobs:
         with:
               registry: docker.io
               username: ${{ secrets.DOCKERHUB_USERNAME }}
-              password: ${{ secrets.DOCKERHUB_ACCESS_TOKEN }}
+              password: ${{ secrets.DOCKERHUB_PASSWORD }}
 
       - name: Build and start containers with Docker Compose
         env:
