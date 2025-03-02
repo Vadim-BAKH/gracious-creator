@@ -74,6 +74,8 @@ jobs:
         fi
 
     - name: Pytest
+      env:
+        TEST_DB_URI: "postgresql://test:test@db_test:5433/test_db"
       run: |
         pytest
 
