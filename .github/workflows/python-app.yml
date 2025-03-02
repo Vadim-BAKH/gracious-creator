@@ -43,14 +43,14 @@ jobs:
       run: |
         docker compose up --build -d
 
-    - name: Get container name
-      id: get_container_name
-      run: |
-        echo "::set-output name=container_name::$(docker ps -a --filter="name=web_" --format="{{.Names}}")"
+    # - name: Get container name
+    #   id: get_container_name
+    #   run: |
+    #     echo "::set-output name=container_name::$(docker ps -a --filter="name=web_" --format="{{.Names}}")"
 
     - name: Docker exec
       run: |
-        docker exec -it ${{ steps.get_container_name.outputs.container_name }} bash
+        docker exec -it web_ bash
 
     - name: Pytest
       run: |
