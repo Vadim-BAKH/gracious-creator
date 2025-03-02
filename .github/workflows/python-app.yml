@@ -41,7 +41,7 @@ jobs:
         DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
         SECRET_KEY: ${{ secrets.SECRET_KEY }}
       run: |
-        docker-compose up --build -d
+        docker compose up --build -d
 
     - name: Docker exec
       run: |
@@ -53,4 +53,4 @@ jobs:
 
     - name: Finish workflow
       run: |
-        docker-compose down -v
+        docker compose down -v
