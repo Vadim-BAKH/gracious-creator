@@ -79,7 +79,7 @@ jobs:
       env:
         TEST_DB_URI: "postgresql://test:test@db_test:5433/test_db"
       run: |
-        docker compose web pytest
+        docker compose run web pytest
 
     - name: Finish workflow
       run: |
