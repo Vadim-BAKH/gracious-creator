@@ -64,20 +64,22 @@ jobs:
         echo "Container name: $CONTAINER_NAME"
         echo "::set-output name=container_name::$CONTAINER_NAME"
 
-    - name: Docker exec
-      run: |
-        echo "Trying to exec into container: ${{ steps.get_container_name.outputs.container_name }}"
-        if [ -n "${{ steps.get_container_name.outputs.container_name }}" ]; then
-          docker exec -it ${{ steps.get_container_name.outputs.container_name }} bash
-        else
-          echo "Container not found."
-        fi
+    # - name: Docker exec
+    #   env:
+    #     TEST_DB_URI: "postgresql://test:test@db_test:5433/test_db"
+    #   run: |
+    #     echo "Trying to exec into container: ${{ steps.get_container_name.outputs.container_name }}"
+    #     if [ -n "${{ steps.get_container_name.outputs.container_name }}" ]; then
+    #       docker exec -it ${{ steps.get_container_name.outputs.container_name }} bash
+    #     else
+    #       echo "Container not found."
+    #     fi
 
     - name: Pytest
       env:
         TEST_DB_URI: "postgresql://test:test@db_test:5433/test_db"
       run: |
-        pytest
+        docker compose web pytest
 
     - name: Finish workflow
       run: |
