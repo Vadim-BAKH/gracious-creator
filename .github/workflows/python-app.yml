@@ -43,9 +43,9 @@ jobs:
       run: |
         docker compose up --build -d
 
-    # - name: Docker exec
-    #   run: |
-    #     docker exec -it best_parking-web-1 bash
+    - name: Docker exec
+      run: |
+        docker exec -it web bash
 
     - name: Pytest
       run: |
