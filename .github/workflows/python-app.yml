@@ -82,7 +82,7 @@ jobs:
 
     - name: Pytest
       run: |
-        docker-compose run web pytest
+        docker compose run web pytest
 
 
     - name: Finish workflow
