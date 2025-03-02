@@ -12,42 +12,59 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
-
     steps:
     - name: Check out repository code
       uses: actions/checkout@v4
-    
+
     - name: Set up Python 3.13
       uses: actions/setup-python@v3
       with:
         python-version: '3.13'
+
+    - name: Upgrade pip
+      run: |
+        pip install --upgrade pip
+
+    - name: Install dependencies
+      run: |
+          pip install -r requirements.txt
     
+
     - name: Lint with flake8
       run: |
-        pip install flake8
         flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
         flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
+
     - name: Run ruff
       uses: astral-sh/ruff-action@v3
+
     - name: Run isort
       run: |
-        pip install isort
-        isort . 
-  
-        
+        isort .
+
+   
+
     - name: Docker build and run
+      env:
+        DB_USER: ${{ secrets.DB_USER }}
+        DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+        SECRET_KEY: ${{ secrets.SECRET_KEY }}
       run: |
         docker compose up --build -d
-        
-    - name: Docker exec
+
+   
+
+    - name: Create .env file
       run: |
-        docker exec -it best_parking-web-1 bash
+        echo "DB_USER=${{ secrets.DB_USER }}" > .env
+        echo "DB_PASSWORD=${{ secrets.DB_PASSWORD }}" >> .env
 
     - name: Pytest
       run: |
-        pytest
+        docker compose run web pytest
+
 
     - name: Finish workflow
       run: |
-        exit
         docker compose down -v
+
