@@ -41,7 +41,7 @@ jobs:
         DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
         SECRET_KEY: ${{ secrets.SECRET_KEY }}
       run: |
-        docker-compose up --build -d
+        docker compose up --build -d
 
     - name: Get container name
       id: get_container_name
@@ -56,9 +56,7 @@ jobs:
       run: |
         pytest
 
-    - name: Finish workflow
-      run: |
-        docker-compose down -v
+   
 
     - name: Finish workflow
       run: |
