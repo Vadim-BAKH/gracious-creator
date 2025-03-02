@@ -139,6 +139,13 @@ bash     source .myenv/bin/activate
          DB_PASSWORD=ваш пароль
          SECRET_KEY=ваш ключ
 
+В репозитории содержится docker-compose.yml с image на мой образ контейнера в Docker Hab
+в таком положении достаточно запустить docker compose up --build -d
+Можно так же удалить ссылку на image и указать: 
+"web:"  
+    "build:" "."
+Тогда необходимо править импорты в приложении, а именно удалить все "app" и ".". 
+
 ### Запуск приложения в фоновом режиме
 
 bash     docker compose up --build -d
