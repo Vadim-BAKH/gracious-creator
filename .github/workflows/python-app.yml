@@ -43,6 +43,11 @@ jobs:
       run: |
         docker compose up --build -d
 
+    - name: List containers
+      run: |
+        echo "Available containers:"
+        docker ps -a
+
     - name: Get container name
       id: get_container_name
       run: |
@@ -53,7 +58,11 @@ jobs:
     - name: Docker exec
       run: |
         echo "Trying to exec into container: ${{ steps.get_container_name.outputs.container_name }}"
-        docker exec -it ${{ steps.get_container_name.outputs.container_name }} bash
+        if [ -n "${{ steps.get_container_name.outputs.container_name }}" ]; then
+          docker exec -it ${{ steps.get_container_name.outputs.container_name }} bash
+        else
+          echo "Container not found."
+        fi
 
     - name: Pytest
       run: |
@@ -63,8 +72,3 @@ jobs:
       run: |
         docker compose down -v
 
-   
-
-    - name: Finish workflow
-      run: |
-        docker compose down -v
