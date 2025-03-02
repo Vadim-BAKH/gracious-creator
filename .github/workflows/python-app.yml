@@ -75,11 +75,15 @@ jobs:
     #       echo "Container not found."
     #     fi
 
-    - name: Pytest
-      env:
-        TEST_DB_URI: "postgresql://test:test@db_test:5432/test_db"
+    - name: Create .env file
       run: |
-        docker compose run web pytest
+        echo "DB_USER=${{ secrets.DB_USER }}" > .env
+        echo "DB_PASSWORD=${{ secrets.DB_PASSWORD }}" >> .env
+
+    - name: Pytest
+      run: |
+        docker-compose run web pytest
+
 
     - name: Finish workflow
       run: |
