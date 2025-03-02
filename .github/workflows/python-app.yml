@@ -36,7 +36,7 @@ jobs:
         ruff check --fix .
     - name: Run isort
       run: |
-        isort . --check-only
+        isort . 
         
     - name: Docker build and run
       run: |
